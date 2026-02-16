@@ -50,9 +50,15 @@ src/
 │
 ├── widgets/
 │   ├── index.ts                    # Barrel — side-effect imports trigger registration
-│   └── clock/
-│       ├── ClockWidget.tsx          # Live clock showing time and date
-│       ├── ClockWidget.module.css
+│   ├── clock/
+│   │   ├── ClockWidget.tsx          # Live clock showing time and date
+│   │   ├── ClockWidget.module.css
+│   │   └── index.ts                # Calls registerWidget()
+│   └── weather/
+│       ├── WeatherWidget.tsx        # Current weather via MET Norway API
+│       ├── WeatherWidget.module.css
+│       ├── WeatherWidget.test.tsx
+│       ├── useGeolocation.ts        # Browser geolocation hook
 │       └── index.ts                # Calls registerWidget()
 │
 └── components/
@@ -129,9 +135,16 @@ import "./my-widget";
 
 The widget will now appear in the "Add Widget" picker.
 
+## Widgets
+
+| Widget  | ID        | Default Size | Description                                                        |
+| ------- | --------- | ------------ | ------------------------------------------------------------------ |
+| Clock   | `clock`   | small        | Live time and date display, updates every second                   |
+| Weather | `weather` | small        | Current weather using browser geolocation + MET Norway Locationforecast API |
+
 ## Tests
 
-Tests use [Vitest](https://vitest.dev/) and cover the two core logic layers:
+Tests use [Vitest](https://vitest.dev/) and cover the core logic layers:
 
 ### Widget Registry — 5 tests
 
@@ -157,5 +170,11 @@ Tests use [Vitest](https://vitest.dev/) and cover the two core logic layers:
 - Removing a widget by instance ID
 - Reordering widgets within a tab
 - Widget operations only affect the targeted tab
+
+### Weather Widget — tests
+
+`src/widgets/weather/WeatherWidget.test.tsx`
+
+- API fetch and geolocation handling
 
 A `test-setup.ts` file provides a `window.localStorage` mock so Zustand's persist middleware works in the Node test environment.
