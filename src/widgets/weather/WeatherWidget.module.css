@@ -7,6 +7,12 @@
   gap: 4px;
 }
 
+.location {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
 .icon {
   margin-bottom: 4px;
 }
