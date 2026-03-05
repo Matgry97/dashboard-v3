@@ -3,8 +3,8 @@ import { WeatherWidget } from "./WeatherWidget";
 
 registerWidget({
   id: "weather",
-  name: "Weather",
-  description: "Shows current weather for your location.",
+  name: "Today's Weather",
+  description: "Shows today's weather for your location.",
   defaultSize: "small",
   component: WeatherWidget,
 });
