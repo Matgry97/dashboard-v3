@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const API_URL =
-  "/api/met/weatherapi/locationforecast/2.0/compact?lat=58.9700&lon=5.7300";
+const API_URL = "/api/weather/current";
 
 function todayDateStr(): string {
   const d = new Date();
@@ -40,8 +39,9 @@ export const useWeatherStore = create<WeatherStoreState>()(
             return res.json();
           })
           .then((json) => {
+            if (!json.ok) throw new Error(json.message);
             set({
-              timeseries: json.properties.timeseries,
+              timeseries: json.data.properties.timeseries,
               fetchedDate: today,
               status: "success",
               error: null,

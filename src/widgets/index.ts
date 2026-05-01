@@ -2,3 +2,4 @@
 import "./clock";
 import "./weather";
 import "./weather-forecast";
+import "./last-workout";

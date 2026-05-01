@@ -14,6 +14,7 @@ interface DashboardState {
   addWidget: (tabId: string, widgetId: string) => void;
   removeWidget: (tabId: string, instanceId: string) => void;
   reorderWidgets: (tabId: string, widgets: WidgetInstance[]) => void;
+  resizeWidget: (tabId: string, instanceId: string, size: WidgetSize) => void;
 }
 
 function createDefaultTab(): DashboardTab {
@@ -80,6 +81,20 @@ export const useDashboardStore = create<DashboardState>()(
         set((state) => ({
           tabs: state.tabs.map((tab) =>
             tab.id === tabId ? { ...tab, widgets } : tab
+          ),
+        })),
+
+      resizeWidget: (tabId, instanceId, size) =>
+        set((state) => ({
+          tabs: state.tabs.map((tab) =>
+            tab.id === tabId
+              ? {
+                  ...tab,
+                  widgets: tab.widgets.map((w) =>
+                    w.id === instanceId ? { ...w, size } : w
+                  ),
+                }
+              : tab
           ),
         })),
     }),

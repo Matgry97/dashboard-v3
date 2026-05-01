@@ -1,9 +1,8 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  padding: 16px;
-  flex: 1;
+  gap: 28px;
+  padding: 32px;
   align-content: start;
 }
 
@@ -14,7 +13,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 64px 0;
+  padding: 80px 0;
   color: var(--color-text-secondary);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  letter-spacing: 0.06em;
 }

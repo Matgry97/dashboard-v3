@@ -8,42 +8,57 @@
 }
 
 .location {
-  font-size: 12px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--color-text-secondary);
   margin-bottom: 4px;
 }
 
 .icon {
   margin-bottom: 4px;
+  filter: drop-shadow(0 0 8px rgba(0, 232, 122, 0.2));
 }
 
 .temp {
-  font-size: 36px;
-  font-weight: 700;
+  font-family: var(--font-data);
+  font-size: 40px;
+  font-weight: 600;
   color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 .condition {
-  font-size: 13px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
   color: var(--color-text-secondary);
+  margin-top: 2px;
 }
 
 .details {
   display: flex;
-  gap: 12px;
-  margin-top: 4px;
-  font-size: 12px;
+  gap: 14px;
+  margin-top: 6px;
+  font-family: var(--font-data);
+  font-size: 11px;
   color: var(--color-text-secondary);
 }
 
 .loading {
+  font-family: var(--font-ui);
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
 }
 
 .error {
+  font-family: var(--font-ui);
   color: var(--color-danger);
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
   padding: 0 8px;
 }

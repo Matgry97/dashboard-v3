@@ -24,7 +24,8 @@ router.post('/sync', asyncHandler(async (req, res) => {
   try {
     await service.sync();
   } catch (e) {
-    return err(res, 502, 'SYNC_FAILED', `Sync failed: ${e.message}`);
+    const isTimeout = e.message.includes('timed out');
+    return err(res, 502, isTimeout ? 'SYNC_TIMEOUT' : 'SYNC_FAILED', e.message);
   }
 
   let workout;

@@ -4,6 +4,8 @@ const os = require('os');
 const { execFile } = require('child_process');
 
 const DB_PATH = path.join(os.homedir(), 'HealthData', 'DBs', 'garmin_activities.db');
+const CLI_PATH = process.env.GARMINDB_CLI_PATH || 'garmindb_cli.py';
+const SYNC_TIMEOUT_MS = 2 * 60 * 1000;
 
 function getDb() {
   return new Database(DB_PATH, { readonly: true });
@@ -24,20 +26,13 @@ function getLastWorkout() {
   try {
     const row = db.prepare(`
       SELECT
-        activity_id,
         name,
         sport,
-        sub_sport,
         start_time,
         elapsed_time,
-        moving_time,
         distance,
         calories,
-        avg_hr,
-        max_hr,
-        avg_speed,
-        ascent,
-        training_effect
+        avg_hr
       FROM activities
       ORDER BY start_time DESC
       LIMIT 1
@@ -52,13 +47,19 @@ function getLastWorkout() {
 
 function sync() {
   return new Promise((resolve, reject) => {
-    execFile('garmindb_cli.py', ['--activities', '--download', '--import', '--analyze', '--latest'], (error, stdout, stderr) => {
+    const child = execFile(CLI_PATH, ['--activities', '--download', '--import', '--analyze', '--latest'], (error, stdout, stderr) => {
+      clearTimeout(timer);
       if (error) {
         reject(new Error(stderr || error.message));
       } else {
         resolve(stdout);
       }
     });
+
+    const timer = setTimeout(() => {
+      child.kill();
+      reject(new Error('Sync timed out after 2 minutes'));
+    }, SYNC_TIMEOUT_MS);
   });
 }
 
