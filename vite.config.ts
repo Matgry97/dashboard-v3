@@ -8,6 +8,14 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
+        "/api/garmin": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+        },
+        "/api/health": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+        },
         "/api/met": {
           target: "https://api.met.no",
           changeOrigin: true,

@@ -9,9 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "server": "node server/index.js"
   },
   "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "express": "^5.2.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zustand": "^5.0.11"
