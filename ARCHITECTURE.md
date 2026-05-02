@@ -18,19 +18,14 @@ A personal dashboard built with React on the frontend and a lightweight Node.js/
 └──────┬──────────────┬───────────────┘
        │              │
 ┌──────▼──────┐ ┌─────▼──────┐
-│   garmin/   │ │  weather/  │  ...
+│   strava/   │ │  weather/  │  ...
 │  router.js  │ │  router.js │
 │  service.js │ │  service.js│
 └──────┬──────┘ └──────┬─────┘
        │               │
-       │        ┌──────▼──────────────────┐
-       │        │  Open-Meteo API (HTTP)  │
-       │        └─────────────────────────┘
-       │
-┌──────▼──────────────────────────────┐
-│  GarminDB SQLite  ~/HealthData/DBs/ │
-│  garmin_activities.db               │
-└─────────────────────────────────────┘
+┌──────▼──────────┐ ┌──▼──────────────────────┐
+│  Strava API     │ │  Open-Meteo API (HTTP)  │
+└─────────────────┘ └─────────────────────────┘
 ```
 
 In development: Vite dev server proxies `/api/*` to Express.
@@ -75,7 +70,7 @@ src/
 │   ├── clock/
 │   ├── weather/
 │   ├── weather-forecast/
-│   └── last-workout/               # Garmin last workout widget
+│   └── last-workout/               # Strava last run widget
 │
 └── components/
     ├── layout/AppLayout.tsx         # Header + TabBar + Dashboard + WidgetPicker toggle
@@ -114,7 +109,6 @@ Every widget that fetches data must handle three states:
 ### Stack
 
 - **Node.js** with **Express**
-- **better-sqlite3** — synchronous SQLite reads, no ORM
 - CommonJS modules (no build step needed for the server)
 
 ### File Structure
@@ -126,9 +120,9 @@ server/
 │   ├── asyncHandler.js             # Wraps async route handlers, forwards errors to Express
 │   └── response.js                 # Consistent { ok, data } / { ok, error, message } envelope
 └── integrations/
-    ├── garmin/
-    │   ├── router.js               # Express router — HTTP only, no business logic
-    │   └── service.js              # Reads SQLite, shells out to garmindb_cli
+    ├── strava/
+    │   ├── router.js               # GET /last-run, POST /sync
+    │   └── service.js              # Fetches Strava API, handles token refresh
     ├── weather/
     │   ├── router.js               # GET /current
     │   └── service.js              # Fetches Open-Meteo API, returns current + forecast data
@@ -140,10 +134,10 @@ server/
 ### API Routes
 
 ```
-GET  /api/health                         # Status of all integrations
-GET  /api/garmin/last-workout            # Latest activity from SQLite
-POST /api/garmin/sync                    # Runs garmindb_cli --latest, returns fresh data
-GET  /api/weather/current               # Current weather + forecast from Open-Meteo (lat/lon via .env)
+GET  /api/health                    # Status of all integrations
+GET  /api/strava/last-run           # Latest run from Strava API
+POST /api/strava/sync               # Force-refresh from Strava, returns fresh data
+GET  /api/weather/current           # Current weather + forecast from Open-Meteo (lat/lon via .env)
 ```
 
 ### Response Envelope
@@ -153,8 +147,7 @@ All endpoints return the same shape so frontend code is predictable:
 ```json
 { "ok": true, "data": { ... } }
 
-{ "ok": false, "error": "DB_NOT_FOUND", "message": "No SQLite file at ~/HealthData/DBs/" }
-{ "ok": false, "error": "SYNC_FAILED",  "message": "garmindb_cli exited with code 1" }
+{ "ok": false, "error": "STRAVA_ERROR", "message": "..." }
 { "ok": false, "error": "UNAVAILABLE",  "message": "..." }
 ```
 
@@ -166,8 +159,8 @@ Widgets check `ok` before rendering. On `ok: false`, show the error message with
 
 ```json
 {
-  "garmin": "ok",
-  "someOtherIntegration": "unavailable"
+  "strava": "ok",
+  "weather": "ok"
 }
 ```
 
@@ -180,52 +173,24 @@ Widgets check `ok` before rendering. On `ok: false`, show the error message with
 
 ---
 
-## Garmin Integration
+## Strava Integration
 
-### Prerequisites (one-time setup on Pi or dev machine)
+### Setup (one-time)
 
-```bash
-pip install garmindb
-# Configure credentials:
-cp ~/.GarminDb/GarminConnectConfig.json.example ~/.GarminDb/GarminConnectConfig.json
-# Edit the file and add your Garmin Connect username/password and start dates
+1. Create a Strava API app at https://www.strava.com/settings/api
+2. Set Authorization Callback Domain to `localhost`
+3. Do the OAuth flow to get a refresh token
+4. Add to `.env`: `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET`, `STRAVA_REFRESH_TOKEN`
 
-# Initial data download:
-garmindb_cli.py --activities --download --import --analyze
-```
+### Auth Flow
 
-### Data Source
+Strava uses OAuth2. The refresh token never expires — the service exchanges it for a
+fresh access token on each request (access tokens expire after 6 hours).
 
-GarminDB stores activity data in SQLite at `~/HealthData/DBs/garmin_activities.db`.
+### Data
 
-Relevant table: `activities`
-
-| Column        | Type    | Description                    |
-|---------------|---------|--------------------------------|
-| activity_id   | String  | Primary key                    |
-| name          | String  | Activity name from Garmin      |
-| sport         | String  | running, cycling, walking, etc.|
-| sub_sport     | String  | e.g. indoor_cycling            |
-| start_time    | DateTime|                                |
-| elapsed_time  | Time    | Total duration                 |
-| moving_time   | Time    | Time actually moving           |
-| distance      | Float   | km or miles                    |
-| calories      | Integer |                                |
-| avg_hr        | Integer | beats per minute               |
-| max_hr        | Integer |                                |
-| avg_speed     | Float   | kmph or mph                    |
-| ascent        | Float   | feet or meters                 |
-| training_effect | Float |                               |
-
-### Sync Strategy
-
-| Phase    | How data stays fresh                                    |
-|----------|---------------------------------------------------------|
-| Now      | "Sync" button in widget calls `POST /api/garmin/sync`   |
-| Later    | Cron job on Pi runs `garmindb_cli.py --latest`          |
-
-The widget always fetches on mount. The sync button exists for manual refresh.
-The cron job replaces the need to press the button.
+The `/last-run` endpoint returns the most recent activity with `type = 'Run'` from
+`/api/v3/athlete/activities`.
 
 ---
 
@@ -251,14 +216,3 @@ node server/index.js   # Serves dist/ as static + handles /api/*
 ```
 
 Run as a systemd service for auto-start on boot.
-
-### Keeping Data Fresh
-
-```bash
-# Manual sync
-garmindb_cli.py --activities --download --import --analyze --latest
-
-# Or hit the sync button in the widget
-# Or set up a cron job:
-# 0 * * * * garmindb_cli.py --activities --download --import --analyze --latest
-```

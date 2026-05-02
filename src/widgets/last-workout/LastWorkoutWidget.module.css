@@ -2,34 +2,36 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 10px;
+  gap: 8px;
+  padding: 4px 0;
 }
 
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .sport {
   font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 700;
-  color: var(--color-accent);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  color: var(--color-accent);
 }
 
 .date {
-  font-family: var(--font-data);
-  font-size: 11px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
   color: var(--color-text-secondary);
 }
 
 .name {
   font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
@@ -37,16 +39,17 @@
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   flex: 1;
+  align-content: flex-start;
 }
 
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .statValue {
@@ -54,7 +57,7 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--color-text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
@@ -62,35 +65,9 @@
   font-family: var(--font-ui);
   font-size: 9px;
   font-weight: 700;
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
   letter-spacing: 0.1em;
-}
-
-.syncBtn {
-  align-self: flex-end;
-  padding: 4px 12px;
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  background: transparent;
+  text-transform: uppercase;
   color: var(--color-text-secondary);
-  border: 1px solid var(--color-border-bright);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
-}
-
-.syncBtn:hover:not(:disabled) {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-  background: var(--color-accent-dim);
-}
-
-.syncBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
 .loading {
@@ -104,5 +81,33 @@
 .error {
   font-family: var(--font-ui);
   color: var(--color-danger);
-  font-size: 11px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.syncBtn {
+  margin-top: auto;
+  align-self: flex-start;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.syncBtn:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.syncBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

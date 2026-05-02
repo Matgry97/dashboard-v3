@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
-const garminRouter = require('./integrations/garmin/router');
-const garminService = require('./integrations/garmin/service');
+const stravaRouter = require('./integrations/strava/router');
+const stravaService = require('./integrations/strava/service');
 const weatherRouter = require('./integrations/weather/router');
 const weatherService = require('./integrations/weather/service');
 
@@ -13,13 +13,13 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 // --- Integrations ---
-app.use('/api/garmin', garminRouter);
+app.use('/api/strava', stravaRouter);
 app.use('/api/weather', weatherRouter);
 
 // --- Health check ---
 app.get('/api/health', (req, res) => {
   res.json({
-    garmin: garminService.healthCheck(),
+    strava: stravaService.healthCheck(),
     weather: weatherService.healthCheck(),
   });
 });
