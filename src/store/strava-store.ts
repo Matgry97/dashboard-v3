@@ -13,6 +13,8 @@ export interface LastRun {
   max_heartrate: number | null;
   total_elevation_gain: number;
   suffer_score: number | null;
+  map?: { summary_polyline: string };
+  start_latlng?: [number, number];
 }
 
 interface StravaStoreState {
