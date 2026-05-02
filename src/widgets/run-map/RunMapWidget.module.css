@@ -1,7 +1,7 @@
 .container {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1;
+  width: 220px;
+  height: 220px;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -85,8 +85,8 @@
 }
 
 .placeholder {
-  width: 100%;
-  aspect-ratio: 1;
+  width: 220px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
