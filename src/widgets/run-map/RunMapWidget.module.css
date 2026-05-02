@@ -1,43 +1,30 @@
 .container {
   position: relative;
-  height: 100%;
   width: 100%;
+  aspect-ratio: 1;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .map {
-  height: 100%;
-  width: 100%;
-}
-
-.overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 24px 12px 10px;
-  background: linear-gradient(to top, rgba(4, 13, 7, 0.92) 0%, rgba(4, 13, 7, 0.5) 60%, transparent 100%);
+  inset: 0;
+}
+
+.statsCard {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
   z-index: 1000;
-  pointer-events: none;
-}
-
-.runName {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.stats {
   display: flex;
-  gap: 16px;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(4, 13, 7, 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 8px;
+  padding: 8px 10px;
+  pointer-events: none;
 }
 
 .heroStat {
@@ -49,7 +36,7 @@
 
 .heroValue {
   font-family: var(--font-data);
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--color-text);
   letter-spacing: -0.03em;
@@ -58,26 +45,24 @@
 
 .heroUnit {
   font-family: var(--font-data);
-  font-size: 13px;
+  font-size: 10px;
   color: var(--color-text-secondary);
 }
 
-.divider {
-  width: 1px;
-  height: 28px;
-  background: var(--color-border-bright);
-  flex-shrink: 0;
+.secondaryStats {
+  display: flex;
+  gap: 10px;
 }
 
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .statValue {
   font-family: var(--font-data);
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--color-text);
   letter-spacing: -0.01em;
@@ -86,23 +71,22 @@
 
 .statUnit {
   font-family: var(--font-data);
-  font-size: 10px;
-  font-weight: 400;
+  font-size: 9px;
   color: var(--color-text-secondary);
 }
 
 .statLabel {
   font-family: var(--font-ui);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
 }
 
 .placeholder {
-  height: 100%;
   width: 100%;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;

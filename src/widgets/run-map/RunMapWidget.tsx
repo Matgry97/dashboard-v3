@@ -72,7 +72,7 @@ export function RunMapWidget(_props: { instanceId: string }) {
       opacity: 0.9,
     });
     polyline.addTo(map);
-    map.fitBounds(polyline.getBounds(), { padding: [6, 6] });
+    map.fitBounds(polyline.getBounds(), { padding: [2, 2] });
 
     mapInstanceRef.current = map;
 
@@ -101,14 +101,12 @@ export function RunMapWidget(_props: { instanceId: string }) {
   return (
     <div className={styles.container}>
       <div ref={mapRef} className={styles.map} />
-      <div className={styles.overlay}>
-        <div className={styles.runName}>{run.name}</div>
-        <div className={styles.stats}>
-          <div className={styles.heroStat}>
-            <span className={styles.heroValue}>{(run.distance / 1000).toFixed(2)}</span>
-            <span className={styles.heroUnit}>km</span>
-          </div>
-          <div className={styles.divider} />
+      <div className={styles.statsCard}>
+        <div className={styles.heroStat}>
+          <span className={styles.heroValue}>{(run.distance / 1000).toFixed(2)}</span>
+          <span className={styles.heroUnit}>km</span>
+        </div>
+        <div className={styles.secondaryStats}>
           <div className={styles.stat}>
             <span className={styles.statValue}>{formatDuration(run.moving_time)}</span>
             <span className={styles.statLabel}>Time</span>
@@ -126,16 +124,9 @@ export function RunMapWidget(_props: { instanceId: string }) {
                 {Math.round(run.average_heartrate)}
                 <span className={styles.statUnit}> bpm</span>
               </span>
-              <span className={styles.statLabel}>Avg HR</span>
+              <span className={styles.statLabel}>HR</span>
             </div>
           )}
-          <div className={styles.stat}>
-            <span className={styles.statValue}>
-              {Math.round(run.total_elevation_gain)}
-              <span className={styles.statUnit}> m</span>
-            </span>
-            <span className={styles.statLabel}>Elev</span>
-          </div>
         </div>
       </div>
     </div>
