@@ -57,7 +57,9 @@ src/
 │   └── dashboard.ts                # WidgetInstance, DashboardTab
 │
 ├── store/
-│   └── dashboard-store.ts          # Tabs, widgets, persistence to localStorage
+│   ├── dashboard-store.ts          # Tabs, widgets, persistence to localStorage
+│   ├── strava-store.ts             # Last run data, day-level cache
+│   └── weather-store.ts            # Current weather + forecast, day-level cache
 │
 ├── registry/
 │   └── widget-registry.ts          # Map<id, WidgetDefinition> — register/get/getAll
@@ -74,7 +76,8 @@ src/
 │
 └── components/
     ├── layout/AppLayout.tsx         # Header + TabBar + Dashboard + WidgetPicker toggle
-    ├── dashboard/Dashboard.tsx      # 3-column CSS grid of widgets
+    ├── dashboard/Dashboard.tsx      # 3-column CSS grid of widgets (regular tabs)
+    ├── display/DisplayTab.tsx       # Fixed curated layout for touch display (planned)
     ├── widget-shell/WidgetShell.tsx # Chrome: title bar, remove button, grid sizing
     ├── widget-picker/WidgetPicker.tsx
     └── tab-bar/TabBar.tsx
@@ -126,6 +129,9 @@ server/
     ├── weather/
     │   ├── router.js               # GET /current
     │   └── service.js              # Fetches Open-Meteo API, returns current + forecast data
+    ├── steam/                          # Planned: last played game, last achievement
+    │   ├── router.js
+    │   └── service.js
     └── [next-integration]/
         ├── router.js
         └── service.js
@@ -216,3 +222,41 @@ node server/index.js   # Serves dist/ as static + handles /api/*
 ```
 
 Run as a systemd service for auto-start on boot.
+
+---
+
+## Display Tab
+
+A dedicated tab within the existing dashboard designed for always-on, touch-first use on a Raspberry Pi touchscreen.
+
+### Goals
+- Glanceable at a distance — large text, high contrast, minimal chrome
+- Touch-optimized — minimum 44px tap targets, no hover-only interactions
+- Curated fixed layout — not the same editable grid as regular tabs
+
+### Implementation Plan
+- New tab type in the dashboard store (`type: "display"`)
+- `DisplayTab` component with its own layout (no WidgetShell drag/resize controls)
+- Toggle panel to configure which widgets appear — simple on/off list, persisted separately
+- Display config stored in Zustand alongside regular tab config
+
+---
+
+## Planned Integrations
+
+### Strava Weekly Stats
+Reuses the existing Strava token. New endpoint `GET /api/strava/weekly` aggregates
+activity data for the current week (total distance, time, runs).
+
+### Steam / Xbox
+Last played game and last earned achievement. Same router + service pattern.
+Steam: public API with API key. Xbox: OAuth2 with Xbox Live API.
+
+### AI Workout Suggestion
+Tap-to-generate widget. Sends a prompt to the Claude API containing:
+- Last N runs from Strava (distance, pace, HR, elevation)
+- 7-day weather forecast from Open-Meteo
+- User context (e.g. target weekly km)
+
+Returns a structured weekly plan. Not auto-generated — always manual trigger to
+avoid unnecessary API usage.
