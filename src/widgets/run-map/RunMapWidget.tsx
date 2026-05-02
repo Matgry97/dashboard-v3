@@ -19,6 +19,21 @@ function decodePolyline(encoded: string): [number, number][] {
   return coords;
 }
 
+function formatDuration(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+function formatPace(meters: number, seconds: number): string {
+  const secPerKm = seconds / (meters / 1000);
+  const m = Math.floor(secPerKm / 60);
+  const s = Math.round(secPerKm % 60);
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
 export function RunMapWidget(_props: { instanceId: string }) {
   const { run, status, fetchIfNeeded } = useStravaStore();
   const mapRef = useRef<HTMLDivElement>(null);
@@ -57,7 +72,7 @@ export function RunMapWidget(_props: { instanceId: string }) {
       opacity: 0.9,
     });
     polyline.addTo(map);
-    map.fitBounds(polyline.getBounds(), { padding: [16, 16] });
+    map.fitBounds(polyline.getBounds(), { padding: [12, 12] });
 
     mapInstanceRef.current = map;
 
@@ -87,8 +102,41 @@ export function RunMapWidget(_props: { instanceId: string }) {
     <div className={styles.container}>
       <div ref={mapRef} className={styles.map} />
       <div className={styles.overlay}>
-        <span className={styles.name}>{run.name}</span>
-        <span className={styles.dist}>{(run.distance / 1000).toFixed(2)} km</span>
+        <div className={styles.runName}>{run.name}</div>
+        <div className={styles.stats}>
+          <div className={styles.heroStat}>
+            <span className={styles.heroValue}>{(run.distance / 1000).toFixed(2)}</span>
+            <span className={styles.heroUnit}>km</span>
+          </div>
+          <div className={styles.divider} />
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{formatDuration(run.moving_time)}</span>
+            <span className={styles.statLabel}>Time</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>
+              {formatPace(run.distance, run.moving_time)}
+              <span className={styles.statUnit}>/km</span>
+            </span>
+            <span className={styles.statLabel}>Pace</span>
+          </div>
+          {run.average_heartrate != null && (
+            <div className={styles.stat}>
+              <span className={styles.statValue}>
+                {Math.round(run.average_heartrate)}
+                <span className={styles.statUnit}> bpm</span>
+              </span>
+              <span className={styles.statLabel}>Avg HR</span>
+            </div>
+          )}
+          <div className={styles.stat}>
+            <span className={styles.statValue}>
+              {Math.round(run.total_elevation_gain)}
+              <span className={styles.statUnit}> m</span>
+            </span>
+            <span className={styles.statLabel}>Elev</span>
+          </div>
+        </div>
       </div>
     </div>
   );
