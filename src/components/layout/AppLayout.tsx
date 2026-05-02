@@ -10,7 +10,9 @@ export function AppLayout() {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
-        <span className={styles.brand}>Dashboard</span>
+        <span className={styles.brand}>
+          <span className={styles.brandPrompt}>&gt;</span> DASHBOARD<span className={styles.brandCursor}>_</span>
+        </span>
         <button className={styles.addWidgetBtn} onClick={() => setPickerOpen(true)}>
           + Add Widget
         </button>

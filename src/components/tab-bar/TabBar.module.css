@@ -23,7 +23,7 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   border-radius: 4px;
-  transition: color 0.15s;
+  transition: color 0.15s, box-shadow 0.15s, background 0.15s;
   position: relative;
 }
 
@@ -34,16 +34,8 @@
 .tabActive {
   color: var(--color-text);
   font-weight: 700;
-}
-
-.tabActive::after {
-  content: '';
-  position: absolute;
-  bottom: -9px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--color-accent);
+  background: rgba(0, 232, 122, 0.05);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
 }
 
 .removeTab {

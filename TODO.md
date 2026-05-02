@@ -2,16 +2,16 @@
 
 ## Immediate
 
-- [ ] **Garmin initial sync** — rate limited during setup, retry when limit clears:
+- [ ] **Garmin initial sync** — rate limited during setup, retry when limit clears (Pi only):
   ```bash
   garmindb_cli.py --activities --download --import --analyze
   ```
-- [ ] **Create `.env`** from `.env.example` and set `GARMINDB_CLI_PATH` for the Pi
+- [ ] **Create `.env`** from `.env.example` and set `GARMINDB_CLI_PATH` for the Pi (Pi only)
 
 ## Frontend
 
-- [ ] **Resize widget UI** — `resizeWidget` action exists in the store but there is no button or control in `WidgetShell` to trigger it yet
-- [ ] **Widget reorder UI** — `reorderWidgets` exists in the store but drag-and-drop is not implemented
+- [x] **Resize widget UI** — cycle button (S/M/L) in `WidgetShell` header
+- [x] **Widget reorder UI** — HTML5 drag-and-drop on widget shells
 
 ## Pi Deployment
 
@@ -21,4 +21,4 @@
 
 ## Maintenance
 
-- [ ] **Update `ARCHITECTURE.md`** — weather integration pattern changed (now `server/integrations/weather/` instead of Vite proxy), doc is stale
+- [x] **Update `ARCHITECTURE.md`** — weather integration pattern changed (now `server/integrations/weather/` instead of Vite proxy), doc is stale

@@ -18,10 +18,14 @@ A personal dashboard built with React on the frontend and a lightweight Node.js/
 └──────┬──────────────┬───────────────┘
        │              │
 ┌──────▼──────┐ ┌─────▼──────┐
-│   garmin/   │ │  future/   │  ...
+│   garmin/   │ │  weather/  │  ...
 │  router.js  │ │  router.js │
 │  service.js │ │  service.js│
-└──────┬──────┘ └────────────┘
+└──────┬──────┘ └──────┬─────┘
+       │               │
+       │        ┌──────▼──────────────────┐
+       │        │  Open-Meteo API (HTTP)  │
+       │        └─────────────────────────┘
        │
 ┌──────▼──────────────────────────────┐
 │  GarminDB SQLite  ~/HealthData/DBs/ │
@@ -71,7 +75,7 @@ src/
 │   ├── clock/
 │   ├── weather/
 │   ├── weather-forecast/
-│   └── last-workout/               # Planned: Garmin last workout widget
+│   └── last-workout/               # Garmin last workout widget
 │
 └── components/
     ├── layout/AppLayout.tsx         # Header + TabBar + Dashboard + WidgetPicker toggle
@@ -125,6 +129,9 @@ server/
     ├── garmin/
     │   ├── router.js               # Express router — HTTP only, no business logic
     │   └── service.js              # Reads SQLite, shells out to garmindb_cli
+    ├── weather/
+    │   ├── router.js               # GET /current
+    │   └── service.js              # Fetches Open-Meteo API, returns current + forecast data
     └── [next-integration]/
         ├── router.js
         └── service.js
@@ -136,6 +143,7 @@ server/
 GET  /api/health                         # Status of all integrations
 GET  /api/garmin/last-workout            # Latest activity from SQLite
 POST /api/garmin/sync                    # Runs garmindb_cli --latest, returns fresh data
+GET  /api/weather/current               # Current weather + forecast from Open-Meteo (lat/lon via .env)
 ```
 
 ### Response Envelope
