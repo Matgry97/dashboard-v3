@@ -36,6 +36,7 @@ export function Dashboard() {
               size={instance.size}
               onRemove={() => removeWidget(activeTabId, instance.id)}
               onResize={(size) => resizeWidget(activeTabId, instance.id, size)}
+              fixedSize={definition.fixedSize}
               draggable
               isDragging={dragIndex.current === idx && dragOverIndex !== null}
               isDragOver={dragOverIndex === idx && dragIndex.current !== idx}

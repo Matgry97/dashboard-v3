@@ -11,5 +11,6 @@ export interface WidgetDefinition {
   name: string;
   description: string;
   defaultSize: WidgetSize;
+  fixedSize?: boolean;
   component: ComponentType<WidgetComponentProps>;
 }

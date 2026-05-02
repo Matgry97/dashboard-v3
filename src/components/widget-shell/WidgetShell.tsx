@@ -10,6 +10,7 @@ interface WidgetShellProps {
   size: WidgetSize;
   onRemove: () => void;
   onResize: (size: WidgetSize) => void;
+  fixedSize?: boolean;
   draggable?: boolean;
   isDragging?: boolean;
   isDragOver?: boolean;
@@ -25,6 +26,7 @@ export function WidgetShell({
   size,
   onRemove,
   onResize,
+  fixedSize,
   draggable,
   isDragging,
   isDragOver,
@@ -58,18 +60,20 @@ export function WidgetShell({
       <div className={styles.header}>
 <span className={styles.title}>{title}</span>
         <div className={styles.actions}>
-          <div className={styles.sizePill}>
-            {SIZES.map((s) => (
-              <button
-                key={s}
-                className={`${styles.sizeOption} ${size === s ? styles.sizeActive : ''}`}
-                onClick={() => onResize(s)}
-                title={s}
-              >
-                {SIZE_LABELS[s]}
-              </button>
-            ))}
-          </div>
+          {!fixedSize && (
+            <div className={styles.sizePill}>
+              {SIZES.map((s) => (
+                <button
+                  key={s}
+                  className={`${styles.sizeOption} ${size === s ? styles.sizeActive : ''}`}
+                  onClick={() => onResize(s)}
+                  title={s}
+                >
+                  {SIZE_LABELS[s]}
+                </button>
+              ))}
+            </div>
+          )}
           <button className={styles.removeBtn} onClick={onRemove} title="Remove widget">
             ×
           </button>
