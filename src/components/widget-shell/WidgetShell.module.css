@@ -30,6 +30,11 @@
   grid-column: span 1;
 }
 
+.compact {
+  justify-self: start;
+  width: auto;
+}
+
 .medium {
   grid-column: span 2;
 }

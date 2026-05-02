@@ -44,6 +44,7 @@ export function WidgetShell({
   const classes = [
     styles.shell,
     styles[size],
+    fixedSize ? styles.compact : '',
     isDragging ? styles.dragging : '',
     isDragOver ? styles.dragOver : '',
   ].filter(Boolean).join(' ');

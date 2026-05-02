@@ -1,7 +1,7 @@
 .container {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -85,8 +85,8 @@
 }
 
 .placeholder {
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
