@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { todayDateStr } from "../utils/date";
 
 export interface LastRun {
   name: string;
@@ -12,11 +13,6 @@ export interface LastRun {
   max_heartrate: number | null;
   total_elevation_gain: number;
   suffer_score: number | null;
-}
-
-function todayDateStr(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 interface StravaStoreState {

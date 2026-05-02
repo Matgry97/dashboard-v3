@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useWeatherStore } from "../../store/weather-store";
+import { dateStr } from "../../utils/date";
 import styles from "./WeatherForecast.module.css";
 
 interface DayForecast {
@@ -10,10 +11,6 @@ interface DayForecast {
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function localDateStr(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-}
-
 function parseForecast(timeseries: any[]): DayForecast[] {
   const today = new Date();
   const days: DayForecast[] = [];
@@ -21,14 +18,14 @@ function parseForecast(timeseries: any[]): DayForecast[] {
   for (let offset = 1; offset <= 3; offset++) {
     const target = new Date(today);
     target.setDate(target.getDate() + offset);
-    const targetDate = localDateStr(target);
+    const targetDate = dateStr(target);
 
     let best: any = null;
     let bestDiff = Infinity;
 
     for (const entry of timeseries) {
       const time = new Date(entry.time);
-      if (localDateStr(time) !== targetDate) continue;
+      if (dateStr(time) !== targetDate) continue;
       const diff = Math.abs(time.getHours() - 12);
       if (diff < bestDiff) {
         bestDiff = diff;

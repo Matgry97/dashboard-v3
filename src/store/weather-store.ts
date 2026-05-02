@@ -1,12 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { todayDateStr } from "../utils/date";
 
 const API_URL = "/api/weather/current";
-
-function todayDateStr(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
 
 interface WeatherStoreState {
   timeseries: any[] | null;

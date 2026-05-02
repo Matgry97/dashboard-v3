@@ -3,11 +3,13 @@ const ACTIVITIES_URL = 'https://www.strava.com/api/v3/athlete/activities?per_pag
 
 let cachedToken = null;
 let tokenExpiresAt = 0;
+let tokenRefreshPromise = null;
 
 async function getAccessToken() {
   if (cachedToken && Date.now() / 1000 < tokenExpiresAt - 60) return cachedToken;
+  if (tokenRefreshPromise) return tokenRefreshPromise;
 
-  const res = await fetch(TOKEN_URL, {
+  tokenRefreshPromise = fetch(TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -16,13 +18,17 @@ async function getAccessToken() {
       refresh_token: process.env.STRAVA_REFRESH_TOKEN,
       grant_type: 'refresh_token',
     }),
-  });
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`Token refresh failed: ${res.status}`);
+      const data = await res.json();
+      cachedToken = data.access_token;
+      tokenExpiresAt = data.expires_at;
+      return cachedToken;
+    })
+    .finally(() => { tokenRefreshPromise = null; });
 
-  if (!res.ok) throw new Error(`Token refresh failed: ${res.status}`);
-  const data = await res.json();
-  cachedToken = data.access_token;
-  tokenExpiresAt = data.expires_at;
-  return cachedToken;
+  return tokenRefreshPromise;
 }
 
 async function getLastRun() {
