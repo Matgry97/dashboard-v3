@@ -6,5 +6,6 @@ registerWidget({
   name: "Run Map",
   description: "Shows the route of your last Strava run.",
   defaultSize: "small",
+  fixedSize: true,
   component: RunMapWidget,
 });
