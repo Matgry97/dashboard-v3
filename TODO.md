@@ -4,6 +4,11 @@
 - [ ] **Map renders over add widget modal** — Leaflet z-index (700+) exceeds modal z-index (100), needs fix
 - [ ] **Run map widget sizing** — map should be dynamically sized based on the widget column width, not a fixed pixel value. Should scale naturally with the grid.
 
+## Weekly Planner Widget
+- [x] **Create weekly planner widget** — vertical layout, Mon–Sun rows, fully spelled day names, today highlighted
+- [ ] **Add event/note input per day** — each day row should accept text input or items
+- [ ] **Persist planner data** — save entries to Zustand store (localStorage)
+
 ## Tab System
 - [ ] **Scrollable/rotating tab bar** — tabs overflow when there are many (workout, weather, gaming, etc.), need horizontal scroll or overflow handling
 - [ ] **Curated tabs** — create default tabs: Workout, Weather, Gaming

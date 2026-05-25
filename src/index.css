@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --color-bg: #040d07;
-  --color-surface: #091410;
-  --color-surface-alt: #060e08;
-  --color-surface-hover: #0f1e14;
-  --color-border: #122018;
-  --color-border-bright: #1a3024;
-  --color-text: #d4eedf;
-  --color-text-secondary: #4a7a60;
-  --color-accent: #00e87a;
-  --color-accent-dim: rgba(0, 232, 122, 0.12);
+  --color-bg: #111111;
+  --color-surface: #1c1c1c;
+  --color-surface-alt: #171717;
+  --color-surface-hover: #242424;
+  --color-border: #2e2e2e;
+  --color-border-bright: #3a3a3a;
+  --color-text: #e6e6e6;
+  --color-text-secondary: #6b6b6b;
+  --color-accent: #d4d4d4;
+  --color-accent-dim: rgba(212, 212, 212, 0.08);
   --color-danger: #ff4757;
   --color-danger-bg: rgba(255, 71, 87, 0.1);
 
@@ -37,9 +37,6 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 232, 122, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 40% at 90% 105%, rgba(0, 232, 122, 0.03) 0%, transparent 50%);
   background-attachment: fixed;
   overflow: hidden;
 }
