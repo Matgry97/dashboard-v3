@@ -6,6 +6,7 @@
   gap: 28px;
   padding: 32px;
   align-content: start;
+  align-items: start;
 }
 
 .empty {
