@@ -4,6 +4,7 @@
   aspect-ratio: 1;
   border-radius: 4px;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .map {
@@ -13,12 +14,13 @@
 
 .statsCard {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
   z-index: 1000;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: flex-end;
+  justify-content: space-between;
   pointer-events: none;
 }
 
@@ -31,52 +33,57 @@
 
 .heroValue {
   font-family: var(--font-data);
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-text);
   letter-spacing: -0.03em;
   line-height: 1;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
 }
 
 .heroUnit {
   font-family: var(--font-data);
-  font-size: 16px;
+  font-size: 13px;
   color: var(--color-text-secondary);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .secondaryStats {
   display: flex;
-  gap: 14px;
+  gap: 12px;
 }
 
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  align-items: flex-end;
 }
 
 .statValue {
   font-family: var(--font-data);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-text);
   letter-spacing: -0.01em;
   line-height: 1;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .statUnit {
   font-family: var(--font-data);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--color-text-secondary);
 }
 
 .statLabel {
   font-family: var(--font-ui);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .placeholder {

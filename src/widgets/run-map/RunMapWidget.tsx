@@ -72,7 +72,7 @@ export function RunMapWidget(_props: { instanceId: string }) {
       opacity: 0.9,
     });
     polyline.addTo(map);
-    map.fitBounds(polyline.getBounds(), { paddingTopLeft: [140, 8], paddingBottomRight: [8, 90], maxZoom: 18 });
+    map.fitBounds(polyline.getBounds(), { padding: [12, 12], maxZoom: 18 });
     setTimeout(() => map.invalidateSize(), 0);
 
     mapInstanceRef.current = map;
