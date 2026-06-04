@@ -1,16 +1,9 @@
 import type { DragEvent, ReactNode } from "react";
-import type { WidgetSize } from "../../types/widget";
 import styles from "./WidgetShell.module.css";
-
-const SIZES: WidgetSize[] = ["small", "medium", "large"];
-const SIZE_LABELS: Record<WidgetSize, string> = { small: "S", medium: "M", large: "L" };
 
 interface WidgetShellProps {
   title: string;
-  size: WidgetSize;
   onRemove: () => void;
-  onResize: (size: WidgetSize) => void;
-  fixedSize?: boolean;
   draggable?: boolean;
   isDragging?: boolean;
   isDragOver?: boolean;
@@ -23,10 +16,7 @@ interface WidgetShellProps {
 
 export function WidgetShell({
   title,
-  size,
   onRemove,
-  onResize,
-  fixedSize,
   draggable,
   isDragging,
   isDragOver,
@@ -36,15 +26,8 @@ export function WidgetShell({
   onDragEnd,
   children,
 }: WidgetShellProps) {
-  function cycleSize() {
-    const next = SIZES[(SIZES.indexOf(size) + 1) % SIZES.length];
-    onResize(next);
-  }
-
   const classes = [
     styles.shell,
-    styles[size],
-    fixedSize ? styles.compact : '',
     isDragging ? styles.dragging : '',
     isDragOver ? styles.dragOver : '',
   ].filter(Boolean).join(' ');
@@ -61,20 +44,6 @@ export function WidgetShell({
       <div className={styles.header}>
 <span className={styles.title}>{title}</span>
         <div className={styles.actions}>
-          {!fixedSize && (
-            <div className={styles.sizePill}>
-              {SIZES.map((s) => (
-                <button
-                  key={s}
-                  className={`${styles.sizeOption} ${size === s ? styles.sizeActive : ''}`}
-                  onClick={() => onResize(s)}
-                  title={s}
-                >
-                  {SIZE_LABELS[s]}
-                </button>
-              ))}
-            </div>
-          )}
           <button className={styles.removeBtn} onClick={onRemove} title="Remove widget">
             ×
           </button>

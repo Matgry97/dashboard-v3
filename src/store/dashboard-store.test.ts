@@ -7,7 +7,6 @@ const clockDef: WidgetDefinition = {
   id: "clock",
   name: "Clock",
   description: "A clock widget",
-  defaultSize: "small",
   component: () => null,
 };
 
@@ -83,7 +82,6 @@ describe("dashboard-store", () => {
       const widgets = getState().tabs[0].widgets;
       expect(widgets).toHaveLength(1);
       expect(widgets[0].widgetId).toBe("clock");
-      expect(widgets[0].size).toBe("small");
     });
 
     it("does nothing when adding unregistered widget", () => {

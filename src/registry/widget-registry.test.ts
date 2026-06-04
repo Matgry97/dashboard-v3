@@ -12,7 +12,6 @@ function makeDef(id: string): WidgetDefinition {
     id,
     name: `Widget ${id}`,
     description: `Description for ${id}`,
-    defaultSize: "small",
     component: () => null,
   };
 }

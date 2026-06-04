@@ -5,6 +5,5 @@ registerWidget({
   id: "last-workout",
   name: "Last Workout",
   description: "Shows your last run from Strava.",
-  defaultSize: "medium",
   component: LastWorkoutWidget,
 });

@@ -7,6 +7,7 @@
   flex-direction: column;
   overflow: hidden;
   min-height: 200px;
+  grid-column: span 1;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -24,23 +25,6 @@
 .dragOver {
   border-color: var(--color-accent) !important;
   box-shadow: 0 0 0 1px var(--color-accent), 0 0 40px rgba(0, 232, 122, 0.12) !important;
-}
-
-.small {
-  grid-column: span 1;
-}
-
-.compact {
-  justify-self: start;
-  width: auto;
-}
-
-.medium {
-  grid-column: span 2;
-}
-
-.large {
-  grid-column: span 3;
 }
 
 .header {
@@ -68,46 +52,6 @@
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-}
-
-.sizePill {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--color-border-bright);
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.sizeOption {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 20px;
-  border: none;
-  background: transparent;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-ui);
-  letter-spacing: 0.04em;
-  padding: 0;
-  transition: color 0.1s, background 0.1s;
-}
-
-.sizeOption:not(:last-child) {
-  border-right: 1px solid var(--color-border-bright);
-}
-
-.sizeOption:hover {
-  color: var(--color-accent);
-  background: var(--color-accent-dim);
-}
-
-.sizeActive {
-  color: var(--color-accent) !important;
-  background: var(--color-accent-dim) !important;
 }
 
 .removeBtn {

@@ -8,7 +8,6 @@ export function Dashboard() {
   const tabs = useDashboardStore((s) => s.tabs);
   const activeTabId = useDashboardStore((s) => s.activeTabId);
   const removeWidget = useDashboardStore((s) => s.removeWidget);
-  const resizeWidget = useDashboardStore((s) => s.resizeWidget);
   const reorderWidgets = useDashboardStore((s) => s.reorderWidgets);
 
   const dragIndex = useRef<number | null>(null);
@@ -33,10 +32,7 @@ export function Dashboard() {
             <WidgetShell
               key={instance.id}
               title={definition.name}
-              size={instance.size}
               onRemove={() => removeWidget(activeTabId, instance.id)}
-              onResize={(size) => resizeWidget(activeTabId, instance.id, size)}
-              fixedSize={definition.fixedSize}
               draggable
               isDragging={dragIndex.current === idx && dragOverIndex !== null}
               isDragOver={dragOverIndex === idx && dragIndex.current !== idx}

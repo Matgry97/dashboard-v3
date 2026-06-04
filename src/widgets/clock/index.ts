@@ -5,6 +5,5 @@ registerWidget({
   id: "clock",
   name: "Clock",
   description: "Displays the current time and date.",
-  defaultSize: "small",
   component: ClockWidget,
 });
