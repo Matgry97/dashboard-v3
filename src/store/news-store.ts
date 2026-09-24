@@ -21,13 +21,13 @@ interface NewsStoreState {
 export const useNewsStore = create<NewsStoreState>()(
   persist(
     (set, get) => {
-      const load = (category: NewsCategory) => {
+      const load = (category: NewsCategory, fresh = false) => {
         set((s) => ({
           status: { ...s.status, [category]: "loading" },
           error: { ...s.error, [category]: null },
         }));
 
-        fetch(`${API_URL}?category=${category}`)
+        fetch(`${API_URL}?category=${category}${fresh ? "&fresh=1" : ""}`)
           .then((res) =>
             // Error envelopes are JSON too; anything else (e.g. proxy HTML) isn't
             res.json().catch(() => {
@@ -72,7 +72,8 @@ export const useNewsStore = create<NewsStoreState>()(
 
         refresh: (category) => {
           if (get().status[category] === "loading") return;
-          load(category);
+          // Bypass the server cache too, otherwise ↻ could return 15-min-old news
+          load(category, true);
         },
       };
     },

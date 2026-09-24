@@ -1,15 +1,10 @@
-const { fetchWithTimeout } = require('./http');
-
-async function getJson(url) {
-  const res = await fetchWithTimeout(url, 'application/json');
-  return res.json();
-}
+const { fetchJson } = require('./http');
 
 /** Top stories from the official HN Firebase API. */
 async function hackernews(source) {
-  const ids = await getJson(`${source.url}/topstories.json`);
+  const ids = await fetchJson(`${source.url}/topstories.json`);
   const top = ids.slice(0, source.limit);
-  const stories = await Promise.all(top.map((id) => getJson(`${source.url}/item/${id}.json`)));
+  const stories = await Promise.all(top.map((id) => fetchJson(`${source.url}/item/${id}.json`)));
 
   return stories
     .filter((s) => s && !s.deleted && !s.dead && s.title)

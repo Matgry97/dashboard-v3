@@ -86,6 +86,25 @@ describe("parseFeed", () => {
     expect(items[0]).toMatchObject({ title: "Only one", publishedAt: null });
   });
 
+  it("decodes entities exactly once", () => {
+    const xml = `<rss><channel>
+      <item><title>Use &amp;lt;div&amp;gt; &amp; friends</title><link>https://x.test/1</link>
+        <description>&lt;p&gt;Escaped &amp;amp;lt;tag&amp;amp;gt; in HTML&lt;/p&gt;</description></item>
+    </channel></rss>`;
+    const [item] = parseFeed(xml, 5);
+    expect(item.title).toBe("Use &lt;div&gt; & friends");
+    expect(item.summary).toBe("Escaped &lt;tag&gt; in HTML");
+  });
+
+  it("strips tags from Atom html titles only", () => {
+    const xml = `<feed xmlns="http://www.w3.org/2005/Atom">
+      <entry><title type="html">&lt;b&gt;Bold&lt;/b&gt; release</title><link href="https://x.test/a"/><id>a</id></entry>
+      <entry><title>Plain &lt;b&gt; text</title><link href="https://x.test/b"/><id>b</id></entry>
+    </feed>`;
+    const titles = parseFeed(xml, 5).map((i) => i.title).sort();
+    expect(titles).toEqual(["Bold release", "Plain <b> text"]);
+  });
+
   it("throws on non-feed XML", () => {
     expect(() => parseFeed("<html><body>nope</body></html>", 5)).toThrow(/Not an RSS or Atom/);
   });

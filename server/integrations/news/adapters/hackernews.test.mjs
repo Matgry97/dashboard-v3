@@ -14,7 +14,7 @@ function mockFetch() {
     const body = url.endsWith("/topstories.json")
       ? [1, 2, 3, 4]
       : ITEMS[Number(url.match(/item\/(\d+)\.json/)[1])];
-    return { ok: true, status: 200, json: async () => body };
+    return { ok: true, status: 200, headers: new Headers(), text: async () => JSON.stringify(body) };
   });
 }
 

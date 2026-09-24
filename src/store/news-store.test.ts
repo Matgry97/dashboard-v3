@@ -54,11 +54,11 @@ describe("news-store", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("refresh always fetches", () => {
+  it("refresh always fetches and bypasses the server cache", () => {
     const fetchSpy = mockFetch({ ok: true, data: TECH });
     useNewsStore.setState({ data: { tech: TECH }, fetchedAt: { tech: Date.now() } });
     useNewsStore.getState().refresh("tech");
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith("/api/news?category=tech&fresh=1");
   });
 
   it("stores the error message from an error envelope", async () => {
