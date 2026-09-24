@@ -4,6 +4,9 @@ import type { DashboardTab, WidgetInstance } from "../types/dashboard";
 import { getWidget } from "../registry/widget-registry";
 import { generateId } from "../utils/id";
 
+/** Permanent News tab — not part of `tabs[]`, cannot be removed. */
+export const NEWS_TAB_ID = "__news__";
+
 interface DashboardState {
   tabs: DashboardTab[];
   activeTabId: string;

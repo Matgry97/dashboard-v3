@@ -59,6 +59,7 @@ src/
 ├── store/
 │   ├── dashboard-store.ts          # Tabs, widgets, persistence to localStorage
 │   ├── strava-store.ts             # Last run data, day-level cache
+│   ├── news-store.ts               # Selected news category + per-category cache (30 min TTL)
 │   └── weather-store.ts            # Current weather + forecast, day-level cache
 │
 ├── registry/
@@ -78,6 +79,7 @@ src/
     ├── layout/AppLayout.tsx         # Header + TabBar + Dashboard + WidgetPicker toggle
     ├── dashboard/Dashboard.tsx      # 3-column CSS grid of widgets (regular tabs)
     ├── display/DisplayTab.tsx       # Fixed curated layout for touch display (planned)
+    ├── news/NewsTab.tsx             # Permanent News tab: General/Tech switch + source sections
     ├── widget-shell/WidgetShell.tsx # Chrome: title bar, remove button, grid sizing
     ├── widget-picker/WidgetPicker.tsx
     └── tab-bar/TabBar.tsx
@@ -129,6 +131,11 @@ server/
     ├── weather/
     │   ├── router.js               # GET /current
     │   └── service.js              # Fetches Open-Meteo API, returns current + forecast data
+    ├── news/
+    │   ├── sources.js              # News source config + stack keywords
+    │   ├── adapters/               # rss.js (RSS/Atom), hackernews.js — one per feed format
+    │   ├── router.js               # GET /?category=tech|general
+    │   └── service.js              # Runs sources through adapters, per-source cache + isolation
     ├── steam/                          # Planned: last played game, last achievement
     │   ├── router.js
     │   └── service.js
@@ -144,6 +151,7 @@ GET  /api/health                    # Status of all integrations
 GET  /api/strava/last-run           # Latest run from Strava API
 POST /api/strava/sync               # Force-refresh from Strava, returns fresh data
 GET  /api/weather/current           # Current weather + forecast from Open-Meteo (lat/lon via .env)
+GET  /api/news?category=tech        # News sections for a category (tech | general)
 ```
 
 ### Response Envelope
@@ -222,6 +230,33 @@ node server/index.js   # Serves dist/ as static + handles /api/*
 ```
 
 Run as a systemd service for auto-start on boot.
+
+---
+
+## News Integration
+
+The permanent **News** tab (`activeTabId === "__news__"`, not part of `tabs[]`) has a
+General / Tech switch. Tech shows "Your stack" (Snowflake, Claude Code, dbt release
+notes) above "Headlines" (Hacker News, kode24, tek.no). General shows NRK and gamer.no.
+
+The backend is source-agnostic:
+
+- **Sources** are plain config in `server/integrations/news/sources.js`:
+  `{ id, name, category, group, adapter, url, homepage, limit }`.
+- **Adapters** (`adapters/`) turn a source into normalized items:
+  `{ id, title, url, publishedAt, summary?, score?, commentsUrl? }`.
+  `rss` handles RSS 2.0, RSS 1.0 and Atom (incl. GitHub `releases.atom`); `hackernews`
+  uses the official Firebase API.
+- **Service** fetches each source independently (`Promise.allSettled`) — one dead feed
+  shows an inline error, the rest still render. Each source is cached in memory for
+  15 min; if a refetch fails, stale items are served instead of an error.
+- Headlines mentioning a `STACK_KEYWORDS` term get a tag chip.
+
+### Adding a news source
+
+1. Has RSS/Atom → add one entry to `SOURCES` in `sources.js`. Done.
+2. Different format → add `adapters/[name].js` exporting `async (source) => NewsItem[]`,
+   register it in `adapters/index.js`, then add the source entry.
 
 ---
 
