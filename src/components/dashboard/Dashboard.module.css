@@ -4,9 +4,9 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+  grid-auto-rows: var(--card-height);
   padding: 28px 36px 48px;
   align-content: start;
-  align-items: start;
 }
 
 /* Gentle staggered entrance on load */

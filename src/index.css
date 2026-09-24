@@ -42,6 +42,16 @@
   --shadow-float: 0 1px 0 rgba(255, 244, 225, 0.05) inset, 0 30px 70px -20px rgba(0, 0, 0, 0.7);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Every dashboard card has the same height; content centres inside it */
+  --card-height: 400px;
+}
+
+/* Short screens (Pi 800×480): one full row of cards fits under the header */
+@media (max-height: 560px) {
+  :root {
+    --card-height: 336px;
+  }
 }
 
 *,

@@ -1,6 +1,7 @@
 .shell {
   position: relative;
   min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--color-surface);
@@ -84,6 +85,26 @@
 }
 
 .body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 10px 22px 22px;
   overflow: auto;
+  scrollbar-width: thin;
+}
+
+.body > * {
+  flex-shrink: 0;
+}
+
+@media (max-height: 560px) {
+  .header {
+    padding-top: 14px;
+  }
+
+  .body {
+    padding-bottom: 18px;
+  }
 }
