@@ -19,10 +19,16 @@ export default defineConfig(() => {
           target: "http://localhost:3001",
           changeOrigin: true,
         },
+        "/api/news": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+        },
       },
     },
     test: {
       setupFiles: ["./src/test-setup.ts"],
+      // Playwright specs are run by `npx playwright test`, not Vitest
+      exclude: ["**/node_modules/**", "e2e/**"],
     },
   };
 })

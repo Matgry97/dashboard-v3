@@ -6,6 +6,8 @@ const stravaRouter = require('./integrations/strava/router');
 const stravaService = require('./integrations/strava/service');
 const weatherRouter = require('./integrations/weather/router');
 const weatherService = require('./integrations/weather/service');
+const newsRouter = require('./integrations/news/router');
+const newsService = require('./integrations/news/service');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,12 +17,14 @@ app.use(express.json());
 // --- Integrations ---
 app.use('/api/strava', stravaRouter);
 app.use('/api/weather', weatherRouter);
+app.use('/api/news', newsRouter);
 
 // --- Health check ---
 app.get('/api/health', (req, res) => {
   res.json({
     strava: stravaService.healthCheck(),
     weather: weatherService.healthCheck(),
+    news: newsService.healthCheck(),
   });
 });
 

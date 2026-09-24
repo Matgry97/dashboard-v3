@@ -24,6 +24,12 @@
 - [ ] **Touch-first UI** — minimum 44px tap targets, no hover-only interactions on display tab
 - [ ] **Persist display config** — saved in Zustand store separately from regular tab widget configs
 
+## News Tab
+- [x] **News tab** — permanent tab with General/Tech switch, source-agnostic adapters (spec 013)
+- [ ] **Verify feed URLs live** — Snowflake, dbt blog, tek.no, gamer.no feeds unverified (sandbox had no access)
+- [ ] **HTML adapter** — for sources without RSS (fallback for Snowflake / tek.no / gamer.no if needed)
+- [ ] **More general news** — consider E24, BBC World
+
 ## Future Integrations
 - [ ] **Strava weekly stats widget** — total km/time this week (reuses existing Strava token)
 - [ ] **Last played game widget** — Steam or Xbox API, same server integration pattern

@@ -1,4 +1,4 @@
-import { useDashboardStore } from "../../store/dashboard-store";
+import { useDashboardStore, NEWS_TAB_ID } from "../../store/dashboard-store";
 import styles from "./TabBar.module.css";
 
 export function TabBar() {
@@ -30,6 +30,12 @@ export function TabBar() {
           )}
         </button>
       ))}
+      <button
+        className={`${styles.tab} ${activeTabId === NEWS_TAB_ID ? styles.tabActive : ""}`}
+        onClick={() => setActiveTab(NEWS_TAB_ID)}
+      >
+        News
+      </button>
       <button
         className={styles.addTab}
         onClick={() => addTab(`Tab ${tabs.length + 1}`)}
