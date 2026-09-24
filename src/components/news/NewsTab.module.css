@@ -130,6 +130,15 @@
 .cardHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.staleTag {
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--color-danger);
+  white-space: nowrap;
 }
 
 .cardTitle {

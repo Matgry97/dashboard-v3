@@ -30,7 +30,11 @@ const TECH = {
         "Ask HN: What are you working on?",
       ], { score: 312, commentsUrl: "https://news.ycombinator.com/item?id=1" }),
     },
-    section("kode24", "kode24", "headlines", ["Utviklere vil ha mer TypeScript", "Slik bruker NAV dbt", "Lønnsundersøkelsen 2026"]),
+    {
+      ...section("kode24", "kode24", "headlines", ["Utviklere vil ha mer TypeScript", "Slik bruker NAV dbt", "Lønnsundersøkelsen 2026"]),
+      stale: true,
+      fetchedAt: hoursAgo(3),
+    },
     { ...section("tek", "Tek.no", "headlines", []), error: "HTTP 404 from www.tek.no" },
   ],
 };
@@ -77,10 +81,17 @@ test("news tab: switch, sections, persistence", async ({ page }) => {
   // Failed source is isolated
   await expect(page.getByTestId("news-section-tek")).toContainText("Couldn't load Tek.no");
   await expect(page.getByTestId("news-section-hackernews")).toContainText("312 pts");
+  await expect(page.getByTestId("news-section-kode24")).toContainText("as of 3 h ago");
+  await expect(page.getByTestId("news-section-hackernews")).not.toContainText("as of");
   await expect(page.getByTestId("news-section-hackernews").getByText("snowflake", { exact: true })).toBeVisible();
   await expect(page.getByTestId("news-section-snowflake").getByText("New").first()).toBeVisible();
 
   await page.screenshot({ path: "e2e/screenshots/news-tech.png", fullPage: true });
+
+  // ↻ asks the server to bypass its cache
+  const freshReq = page.waitForRequest((r) => r.url().includes("fresh=1"));
+  await page.getByRole("button", { name: "Refresh news" }).click();
+  await freshReq;
 
   await page.getByRole("radio", { name: "General" }).click();
   await expect(page.getByTestId("news-section-nrk")).toBeVisible();

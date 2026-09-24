@@ -20,6 +20,8 @@ export interface NewsSection {
   };
   items: NewsItem[];
   error?: string;
+  /** Source is failing; items are the last good fetch (see fetchedAt). */
+  stale?: boolean;
   fetchedAt: string;
 }
 

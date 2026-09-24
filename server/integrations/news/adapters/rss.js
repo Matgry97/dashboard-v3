@@ -1,5 +1,5 @@
 const { XMLParser } = require('fast-xml-parser');
-const { fetchWithTimeout } = require('./http');
+const { fetchText } = require('./http');
 
 const SUMMARY_MAX = 200;
 
@@ -23,17 +23,33 @@ function text(node) {
   return '';
 }
 
+const collapse = (s) => s.replace(/\s+/g, ' ').trim();
+
+/**
+ * HTML fragment -> plain text. The XML parser has already decoded one level of
+ * entities; what remains is the HTML's own escaping, decoded here exactly once.
+ * `&amp;` goes last so `&amp;lt;` becomes the literal text `&lt;`, not `<`.
+ */
 function stripHtml(html) {
-  return html
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
+  return collapse(
+    html
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&')
+  );
+}
+
+/**
+ * Titles are plain text (RSS; Atom type="text") — already decoded by the parser,
+ * so decoding again would corrupt e.g. "&lt;div&gt;". Only Atom html titles are HTML.
+ */
+function titleText(node) {
+  const type = node && typeof node === 'object' ? node['@_type'] : undefined;
+  return type === 'html' || type === 'xhtml' ? stripHtml(text(node)) : collapse(text(node));
 }
 
 function summarize(raw) {
@@ -61,7 +77,7 @@ function parseRssItem(item) {
   const link = text(item.link);
   return {
     id: text(item.guid) || link,
-    title: stripHtml(text(item.title)),
+    title: titleText(item.title),
     url: link,
     publishedAt: toIso(item.pubDate || item['dc:date']),
     summary: summarize(item.description),
@@ -72,7 +88,7 @@ function parseAtomEntry(entry) {
   const url = atomLink(entry.link);
   return {
     id: text(entry.id) || url,
-    title: stripHtml(text(entry.title)),
+    title: titleText(entry.title),
     url,
     publishedAt: toIso(entry.published || entry.updated),
     summary: summarize(entry.summary || entry.content),
@@ -100,11 +116,11 @@ function parseFeed(xml, limit) {
 }
 
 async function rss(source) {
-  const res = await fetchWithTimeout(
+  const xml = await fetchText(
     source.url,
     'application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.8'
   );
-  return parseFeed(await res.text(), source.limit);
+  return parseFeed(xml, source.limit);
 }
 
 module.exports = { rss, parseFeed };

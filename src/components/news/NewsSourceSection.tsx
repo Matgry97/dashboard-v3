@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function NewsSourceSection({ section, compact = false, now }: Props) {
-  const { source, items, error } = section;
+  const { source, items, error, stale, fetchedAt } = section;
 
   return (
     <section className={styles.card} data-testid={`news-section-${source.id}`}>
@@ -21,6 +21,11 @@ export function NewsSourceSection({ section, compact = false, now }: Props) {
         <a className={styles.cardTitle} href={source.homepage} target="_blank" rel="noopener noreferrer">
           {source.name}
         </a>
+        {stale && !error && (
+          <span className={styles.staleTag} title={`${source.name} is failing — showing last saved items`}>
+            as of {relativeTime(fetchedAt, now)} ago
+          </span>
+        )}
       </header>
 
       {error ? (
