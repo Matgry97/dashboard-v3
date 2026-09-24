@@ -137,3 +137,17 @@
   text-align: center;
   color: var(--color-danger);
 }
+
+@media (max-height: 560px) {
+  .container {
+    gap: 8px;
+  }
+
+  .heroValue {
+    font-size: 40px;
+  }
+
+  .stats {
+    gap: 8px;
+  }
+}
