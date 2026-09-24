@@ -1,50 +1,62 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  background: var(--color-border);
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 2px;
 }
 
 .day {
   display: flex;
   align-items: center;
-  padding: 12px 1em;
-  background: var(--color-surface);
-  transition: background 0.15s;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
 }
 
-.day:first-child {
-  border-radius: 8px 8px 0 0;
-}
-
-.day:last-child {
-  border-radius: 0 0 8px 8px;
-}
-
-.weekend {
+.day:hover {
   background: var(--color-surface-alt);
+}
+
+.dayName {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.dayDate {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.weekend .dayName {
+  color: var(--color-text-secondary);
 }
 
 .today {
   background: var(--color-accent-dim);
 }
 
-.today .dayName {
-  color: var(--color-accent);
-}
-
-.dayName {
-  font-family: var(--font-ui);
-  font-size: 0.75em;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  line-height: 1;
+.today:hover {
+  background: var(--color-accent-dim);
 }
 
 .today .dayName {
+  font-weight: 600;
   color: var(--color-text);
+}
+
+.today .dayName::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0 10px 1px 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.today .dayDate {
+  color: var(--color-accent);
 }

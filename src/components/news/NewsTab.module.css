@@ -1,8 +1,8 @@
 .newsTab {
-  padding: 24px 32px 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
+  padding: 24px 36px 48px;
 }
 
 /* --- Toolbar --- */
@@ -11,33 +11,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   flex-wrap: wrap;
+  gap: 16px;
 }
 
 .switch {
   display: inline-flex;
-  padding: 3px;
-  border: 1px solid var(--color-border-bright);
-  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
   background: var(--color-surface-alt);
 }
 
 .switchOption {
-  min-width: 96px;
+  min-width: 104px;
   min-height: 44px;
-  padding: 0 18px;
+  padding: 0 20px;
   border: none;
-  border-radius: 7px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--color-text-secondary);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.2s, background 0.2s;
 }
 
 .switchOption:hover {
@@ -46,8 +43,9 @@
 
 .switchActive {
   color: var(--color-text);
-  background: rgba(0, 232, 122, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(0, 232, 122, 0.3);
+  font-weight: 600;
+  background: var(--color-surface-hover);
+  box-shadow: var(--shadow-card);
 }
 
 .toolbarRight {
@@ -57,26 +55,26 @@
 }
 
 .updated {
-  font-family: var(--font-data);
-  font-size: 11px;
-  color: var(--color-text-secondary);
+  font-size: 13px;
+  color: var(--color-text-muted);
 }
 
 .refreshBtn {
   width: 44px;
   height: 44px;
   border: 1px solid var(--color-border-bright);
-  border-radius: 10px;
-  background: transparent;
+  border-radius: 50%;
+  background: var(--color-surface);
   color: var(--color-text-secondary);
   font-size: 18px;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .refreshBtn:hover:not(:disabled) {
   color: var(--color-accent);
-  border-color: var(--color-accent);
+  border-color: var(--color-accent-line);
+  background: var(--color-accent-dim);
 }
 
 .refreshBtn:disabled {
@@ -84,7 +82,7 @@
 }
 
 .spinning {
-  animation: spin 1s linear infinite;
+  animation: spin 1.2s linear infinite;
 }
 
 @keyframes spin {
@@ -94,13 +92,12 @@
 /* --- Groups --- */
 
 .groupTitle {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  margin-bottom: -8px;
+  margin: 6px 0 -8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  font-variation-settings: 'SOFT' 100, 'opsz' 48;
+  color: var(--color-text);
 }
 
 .grid {
@@ -110,21 +107,35 @@
   align-items: start;
 }
 
+.grid > * {
+  animation: rise 0.6s var(--ease-out) both;
+}
+.grid > *:nth-child(2) { animation-delay: 60ms; }
+.grid > *:nth-child(3) { animation-delay: 120ms; }
+.grid > *:nth-child(n + 4) { animation-delay: 180ms; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
 /* --- Source card --- */
 
 .card {
   min-width: 0;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  padding: 14px 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.3s ease;
+  gap: 8px;
+  padding: 18px 22px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.3s;
 }
 
 .card:hover {
-  border-color: rgba(0, 232, 122, 0.2);
+  border-color: var(--color-border-bright);
 }
 
 .cardHeader {
@@ -134,25 +145,34 @@
   gap: 8px;
 }
 
-.staleTag {
-  font-family: var(--font-data);
-  font-size: 10px;
-  color: var(--color-danger);
-  white-space: nowrap;
+.cardTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.cardTitle {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(0, 232, 122, 0.55);
-  text-decoration: none;
+.cardTitle::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  opacity: 0.8;
 }
 
 .cardTitle:hover {
-  color: rgba(0, 232, 122, 0.85);
+  color: var(--color-text);
+}
+
+.staleTag {
+  font-size: 12px;
+  color: var(--color-danger);
+  white-space: nowrap;
 }
 
 .items {
@@ -162,79 +182,74 @@
 }
 
 .item {
-  padding: 9px 0;
-  border-top: 1px solid var(--color-border);
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+  gap: 5px;
+  padding: 12px 0;
+  border-top: 1px solid var(--color-border);
 }
 
 .item:first-child {
   border-top: none;
-  padding-top: 2px;
+  padding-top: 4px;
 }
 
 .itemTitle {
-  font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.45;
   color: var(--color-text);
   text-decoration: none;
   overflow-wrap: anywhere;
+  transition: color 0.2s;
 }
 
 .itemTitle:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--color-accent);
 }
 
 .itemMeta {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  font-family: var(--font-data);
-  font-size: 11px;
-  color: var(--color-text-secondary);
+  gap: 4px 12px;
+  font-size: 13px;
+  color: var(--color-text-muted);
 }
 
 .itemMeta a {
-  color: inherit;
+  color: var(--color-text-secondary);
+  text-decoration: none;
 }
 
 .itemMeta a:hover {
   color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .newBadge,
 .tag {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border-radius: 3px;
-  padding: 2px 6px;
+  padding: 1px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .newBadge {
-  color: rgb(0, 232, 122);
-  background: rgba(0, 232, 122, 0.08);
-  border: 1px solid rgba(0, 232, 122, 0.25);
+  color: var(--color-success);
+  background: var(--color-success-bg);
 }
 
 .tag {
   color: var(--color-accent);
   background: var(--color-accent-dim);
-  border: 1px solid var(--color-border-bright);
 }
 
 .sectionError,
 .sectionEmpty {
-  font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-text-secondary);
 }
 
@@ -250,56 +265,53 @@
 
 .skeleton {
   height: 220px;
-  background: linear-gradient(90deg, var(--color-surface-alt) 0%, var(--color-surface) 50%, var(--color-surface-alt) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
+  background: linear-gradient(100deg, var(--color-surface) 30%, var(--color-surface-hover) 50%, var(--color-surface) 70%);
+  background-size: 250% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
 }
 
 @keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+  from { background-position: 120% 0; }
+  to { background-position: -120% 0; }
 }
 
 .fullError {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 80px 0;
-  font-family: var(--font-ui);
-  font-size: 13px;
+  gap: 16px;
+  padding: 96px 0;
   color: var(--color-text-secondary);
 }
 
 .retryBtn {
   min-height: 44px;
-  padding: 0 20px;
+  padding: 0 22px;
   border: 1px solid var(--color-border-bright);
-  border-radius: 8px;
-  background: transparent;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
   color: var(--color-text);
-  font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.06em;
   cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .retryBtn:hover {
-  border-color: var(--color-accent);
+  border-color: var(--color-accent-line);
+  background: var(--color-accent-dim);
 }
 
 .staleNotice {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  color: var(--color-danger);
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
   background: var(--color-danger-bg);
+  color: var(--color-danger);
+  font-size: 14px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .newsTab {
-    padding: 16px;
+    padding: 16px 16px 40px;
   }
 }

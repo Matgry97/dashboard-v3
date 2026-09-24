@@ -67,8 +67,8 @@ export function RunMapWidget(_props: { instanceId: string }) {
     }).addTo(map);
 
     const polyline = L.polyline(coords, {
-      color: "#00e87a",
-      weight: 3,
+      color: "#e6b17e",
+      weight: 4,
       opacity: 0.9,
     });
     polyline.addTo(map);

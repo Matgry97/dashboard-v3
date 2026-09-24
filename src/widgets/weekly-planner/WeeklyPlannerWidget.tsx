@@ -39,6 +39,9 @@ export function WeeklyPlannerWidget() {
             className={`${styles.day} ${isToday ? styles.today : ""} ${isWeekend ? styles.weekend : ""}`}
           >
             <span className={styles.dayName}>{DAYS[i]}</span>
+            <span className={styles.dayDate}>
+              {date.toLocaleDateString(undefined, { day: "numeric", month: "short" })}
+            </span>
           </div>
         );
       })}

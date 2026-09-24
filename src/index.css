@@ -1,21 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap');
+/*
+ * Nordic dusk — a soft, warm dark theme for an always-on display.
+ * Low-glare cream text on ink surfaces, one amber accent, no pure black/white.
+ */
 
 :root {
-  --color-bg: #111111;
-  --color-surface: #1c1c1c;
-  --color-surface-alt: #171717;
-  --color-surface-hover: #242424;
-  --color-border: #2e2e2e;
-  --color-border-bright: #3a3a3a;
-  --color-text: #e6e6e6;
-  --color-text-secondary: #6b6b6b;
-  --color-accent: #d4d4d4;
-  --color-accent-dim: rgba(212, 212, 212, 0.08);
-  --color-danger: #ff4757;
-  --color-danger-bg: rgba(255, 71, 87, 0.1);
+  /* Surfaces */
+  --color-bg: #16181d;
+  --color-surface: #1e2128;
+  --color-surface-alt: #1a1c22;       /* sunken: inputs, tiles inside cards */
+  --color-surface-hover: #252932;     /* raised: hover, active pill */
+  --color-border: rgba(236, 228, 214, 0.07);
+  --color-border-bright: rgba(236, 228, 214, 0.13);
 
-  --font-data: 'IBM Plex Mono', monospace;
-  --font-ui: 'Syne', sans-serif;
+  /* Text — warm cream, never pure white */
+  --color-text: #e9e3d7;
+  --color-text-secondary: #a59f94;
+  --color-text-muted: #7f7a72;
+
+  /* Accent — dusk amber, used sparingly */
+  --color-accent: #e6b17e;
+  --color-accent-dim: rgba(230, 177, 126, 0.12);
+  --color-accent-line: rgba(230, 177, 126, 0.35);
+
+  /* Status */
+  --color-success: #9fc6a3;
+  --color-success-bg: rgba(159, 198, 163, 0.12);
+  --color-danger: #e38d80;
+  --color-danger-bg: rgba(227, 141, 128, 0.1);
+
+  /* Type */
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-ui: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-data: var(--font-ui); /* numbers use tabular figures, see .num */
+
+  /* Shape & depth */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 0 rgba(255, 244, 225, 0.035) inset, 0 12px 32px -18px rgba(0, 0, 0, 0.55);
+  --shadow-float: 0 1px 0 rgba(255, 244, 225, 0.05) inset, 0 30px 70px -20px rgba(0, 0, 0, 0.7);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *,
@@ -34,20 +60,41 @@ body,
 
 body {
   font-family: var(--font-ui);
-  background: var(--color-bg);
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--color-text);
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
-  background-attachment: fixed;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   overflow: hidden;
+  /* Dusk atmosphere: a faint amber glow top-left, cool fjord blue bottom-right */
+  background:
+    radial-gradient(1100px 650px at 8% -12%, rgba(230, 177, 126, 0.09), transparent 62%),
+    radial-gradient(900px 700px at 105% 110%, rgba(118, 146, 186, 0.09), transparent 60%),
+    var(--color-bg);
+  background-attachment: fixed;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 300px 300px;
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-line);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
