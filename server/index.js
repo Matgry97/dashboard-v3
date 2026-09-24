@@ -32,7 +32,12 @@ app.get('/api/health', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '..', 'dist');
   app.use(express.static(distPath));
-  app.get('*', (req, res) => {
+  // Unknown API routes get a JSON 404, not the SPA's HTML
+  app.all('/api/{*rest}', (req, res) => {
+    res.status(404).json({ ok: false, error: 'NOT_FOUND', message: `No route ${req.method} ${req.path}` });
+  });
+  // SPA fallback (Express 5 needs a named wildcard; bare '*' throws at startup)
+  app.get('/{*splat}', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }
