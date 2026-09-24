@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./ClockWidget.module.css";
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export function ClockWidget() {
   const [now, setNow] = useState(new Date());
 
@@ -12,12 +14,10 @@ export function ClockWidget() {
   return (
     <div className={styles.clock}>
       <span className={styles.time}>
-        {now.toLocaleTimeString(undefined, {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })}
+        {pad(now.getHours())}
+        <span className={styles.colon}>:</span>
+        {pad(now.getMinutes())}
+        <span className={styles.seconds}>{pad(now.getSeconds())}</span>
       </span>
       <span className={styles.date}>
         {now.toLocaleDateString(undefined, {

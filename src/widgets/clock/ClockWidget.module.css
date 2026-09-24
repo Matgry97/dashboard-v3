@@ -3,24 +3,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 0;
-  gap: 6px;
+  gap: 10px;
+  padding: 18px 0 8px;
 }
 
 .time {
-  font-family: var(--font-data);
-  font-size: 42px;
-  font-weight: 600;
-  color: var(--color-text);
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-ui);
+  font-size: 72px;
+  font-weight: 300;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.035em;
   line-height: 1;
+  color: var(--color-text);
+}
+
+.colon {
+  margin: 0 2px;
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+.seconds {
+  margin-left: 10px;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
 }
 
 .date {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 15px;
   color: var(--color-text-secondary);
+  text-align: center;
 }
